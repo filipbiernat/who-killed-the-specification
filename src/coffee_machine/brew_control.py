@@ -10,21 +10,17 @@ def decide(
 ) -> "model.BrewResult":
     """Whether this request may start.
 
-    REQ-BREW-014's sentence is checked first: espresso from an empty tank
-    pours a half cup, and that sentence does not mention the boiler or the
-    requested volume. Every other empty tank is still a refusal, and that
-    refusal is reported before a short tank, a short tank before a cold
-    boiler, and a cold boiler before a volume outside the range. Running
-    dry damages the machine; brewing cold only tastes bad.
+    An empty tank is reported before a short tank, a short tank before a
+    cold boiler, and a cold boiler before a volume outside the range.
+    Running dry damages the machine; brewing cold only tastes bad.
+    REQ-BREW-014 names espresso on an empty tank; the same refusal covers
+    every other drink, because an empty tank is the same hazard either way.
     """
     volume_ml = request.requested_volume_ml
 
-    # REQ-BREW-014: espresso selected while the tank is empty pours a half cup.
-    if request.drink == model.Drink.ESPRESSO and tank.is_empty:
-        return model.BrewResult(brew_started=True, volume_ml=model.HALF_CUP_ML)
-
-    # An empty tank on any other drink. REQ-BREW-021 names this refusal.
-    # It stays ahead of REQ-BREW-015: empty is not the same report as short.
+    # REQ-BREW-014: espresso selected while the tank is empty is a refusal.
+    # REQ-BREW-021 names this refusal. It stays ahead of REQ-BREW-015:
+    # empty is not the same report as short.
     if tank.is_empty:
         return model.BrewResult(brew_started=False, refusal=model.Refusal.TANK_EMPTY)
 
