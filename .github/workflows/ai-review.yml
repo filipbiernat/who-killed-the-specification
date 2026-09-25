@@ -1,0 +1,62 @@
+name: ai-review
+
+# A second reader for the requirements themselves, since no linter can judge
+# whether a sentence means one thing.
+#
+# This workflow comments and never blocks. Merging is gated by spec-check,
+# which is deterministic. A reviewer that argues is useful; a reviewer that
+# argues and also holds the keys is not.
+
+on:
+  pull_request:
+    paths:
+      - 'spec/**'
+      - 'tests/**'
+      - 'src/**'
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  review:
+    name: Review the specification
+    if: ${{ !github.event.pull_request.draft }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            Review the requirements changed in this pull request. The house
+            rules are in AGENTS.md; read them first and judge against them
+            rather than against your own preferences.
+
+            For every changed requirement in spec/, answer these in order and
+            leave an inline comment on the offending line where the answer is
+            no:
+
+            1. Does the sentence contain exactly one `shall`? Two means it is
+               two requirements sharing a UID.
+            2. Does it follow one of the five EARS patterns, and is it the
+               right one? `when` is for an expected trigger, `if` is for a
+               condition nobody wants.
+            3. Is it decidable? Could two engineers disagree about whether the
+               machine complied? Quote the words that leave room.
+            4. Does it describe behaviour rather than implementation? A named
+               class, function or file means it has drifted into design.
+            5. Does `references:` name a test file, and does a test in that
+               file carry a matching `@pytest.mark.requirement` marker?
+
+            Then judge the tests: does each assertion correspond to the
+            `shall` clause of the requirement it claims to verify, or does it
+            assert something adjacent that would pass even if the requirement
+            were broken?
+
+            Finish with a short summary comment: one line per requirement with
+            a verdict of pass, partial or fail, and the single most important
+            thing to fix. Do not edit any file and do not push commits.

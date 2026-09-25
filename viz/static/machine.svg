@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1200" id="machine" data-state="idle">
+  <!-- Drawn by hand as flat shapes. Every animated part is its own shape with a
+       stable id, so replacing the drawing never breaks the wiring: #water and
+       #cup-fill are scaled, #warning-light has its fill swapped, #pump, #stream
+       and #steam react to data-state, and #banner is written from telemetry. -->
+
+  <defs>
+    <!-- The cup is a bowl, not a box, so the coffee has to be clipped to its
+         inside. A bare rect would spill past the rounded bottom. -->
+    <clipPath id="cup-inside">
+      <path d="M449 589 h187 v79 a61 61 0 0 1 -61 61 h-65 a61 61 0 0 1 -61 -61 z"/>
+    </clipPath>
+  </defs>
+
+  <g id="machine-body" fill="#F4F5EF" stroke="#35211D" stroke-width="10" stroke-linejoin="round">
+    <!-- One silhouette: top block, tank column, and the base shelf, with the
+         cup alcove cut out of the lower right. -->
+    <path d="M69 95 H661 A29 29 0 0 1 690 124 V350 A29 29 0 0 1 661 379
+             H432 A14 14 0 0 0 418 393 V715 A14 14 0 0 0 432 729
+             H689 A29 29 0 0 1 718 758 V828 A29 29 0 0 1 689 857
+             H69 A29 29 0 0 1 40 828 V124 A29 29 0 0 1 69 95 Z"/>
+    <path d="M40 729 H432" fill="none"/>
+    <rect x="690" y="194" width="28" height="87" rx="12" fill="#D2D1CD"/>
+    <rect x="418" y="729" width="276" height="24" fill="#D2D1CD"/>
+    <circle cx="420" cy="237" r="88"/>
+    <circle cx="420" cy="237" r="59" fill="#BAB9B7"/>
+    <circle cx="596" cy="237" r="70"/>
+  </g>
+
+  <g id="tank">
+    <rect x="45" y="100" width="166" height="27" fill="#D2D1CD"/>
+    <!-- Full height on purpose: the level comes from scaleY, not from here. -->
+    <rect id="water" x="45" y="137" width="166" height="586" fill="#A1D3EA"/>
+    <g fill="none" stroke="#35211D" stroke-width="10">
+      <path d="M45 132 H211"/>
+      <path d="M216 95 V729"/>
+    </g>
+  </g>
+
+  <g id="pump" fill="#D2D1CD" stroke="#35211D" stroke-width="10" stroke-linejoin="round">
+    <rect x="291" y="509" width="55" height="41" rx="8"/>
+    <rect x="251" y="545" width="133" height="174" rx="18"/>
+  </g>
+
+  <circle id="warning-light" cx="596" cy="237" r="41" fill="#BAB9B7" stroke="#35211D" stroke-width="10"/>
+
+  <g id="group-head" fill="#D2D1CD" stroke="#35211D" stroke-width="10" stroke-linejoin="round">
+    <rect x="449" y="379" width="187" height="58" rx="10"/>
+    <rect x="475" y="438" width="133" height="59" rx="8"/>
+    <rect x="609" y="461" width="26" height="20" fill="#5A5653"/>
+    <rect x="634" y="449" width="226" height="42" rx="20" fill="#5A5653"/>
+    <path d="M494 559 V514 a12 12 0 0 1 12 -12 H579 a12 12 0 0 1 12 12 V559
+             H558 V532 H527 V559 Z"/>
+  </g>
+
+  <g id="cup">
+    <path d="M444 584 h197 v84 a66 66 0 0 1 -66 66 h-65 a66 66 0 0 1 -66 -66 z" fill="#FFFFFF"/>
+    <rect id="cup-fill" x="449" y="584" width="187" height="150" fill="#5F361A" clip-path="url(#cup-inside)"/>
+    <g fill="none" stroke="#35211D" stroke-width="10" stroke-linejoin="round">
+      <path d="M641 606 a48 40 0 0 1 0 80"/>
+      <path d="M444 584 h197 v84 a66 66 0 0 1 -66 66 h-65 a66 66 0 0 1 -66 -66 z"/>
+    </g>
+  </g>
+
+  <!-- After the cup, so the pour reads as being in front of the rim. It runs all
+       the way to the bottom: the cup starts empty and fills over 0.6s, and a
+       shorter pour would hang in mid-air for that moment. -->
+  <rect id="stream" x="527" y="553" width="30" height="175" fill="#5F361A"/>
+
+  <!-- Kept clear of the spout on both sides: the gap between rim and spout is
+       narrow, so the puffs leave the cup past the portafilter, not through it. -->
+  <g id="steam" fill="#BFD8EA">
+    <ellipse class="puff" cx="468" cy="570" rx="24" ry="18"/>
+    <ellipse class="puff" cx="614" cy="566" rx="22" ry="17"/>
+    <ellipse class="puff" cx="450" cy="525" rx="17" ry="13"/>
+  </g>
+
+  <text id="banner" x="450" y="960" text-anchor="middle"
+        font-family="Segoe UI, sans-serif" font-size="72" font-weight="700" fill="#B8541F"></text>
+</svg>

@@ -1,0 +1,18 @@
+settings:
+  digits: '3'
+  itemformat: markdown
+  prefix: REQ-BREW
+  sep: '-'
+attributes:
+  defaults:
+    doc:
+      name: REQ-BREW
+      title: Coffee machine brewing requirements
+      ref: CM-SPEC-001
+      by: Coffee Machine Team
+      major: '1'
+      minor: '.0'
+    risk: medium
+    tags: []
+  publish:
+    - risk

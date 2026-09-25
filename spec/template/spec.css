@@ -1,0 +1,324 @@
+/* Styles for the published specification.
+   Deliberately standalone: no Bootstrap, no web fonts, nothing to fetch. The
+   palette matches the coverage and risk reports so the four pages read as one
+   document rather than as output from three different tools. */
+
+:root {
+  --ink: #2B2B2B;
+  --muted: #6E6A62;
+  --rule: #DDD9D2;
+  --wash: #F7F5F2;
+  --accent: #2E7D4F;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--ink);
+  background: #fff;
+}
+
+/* ---------- masthead ---------- */
+
+.masthead {
+  background: var(--ink);
+  color: #fff;
+  padding: 18px 32px 0;
+}
+
+.masthead-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px 32px;
+}
+
+.masthead-identity {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.doc-name {
+  font-family: Consolas, 'Courier New', monospace;
+  font-size: 12px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #B9B4AB;
+  border: 1px solid #4A4640;
+  border-radius: 3px;
+  padding: 2px 8px;
+}
+
+.doc-title, .doc-title p {
+  display: inline;
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+/* The header fields Doorstop leaves as dashes are dropped by the template, so
+   whatever survives here is real and gets room to breathe. */
+.doc-meta {
+  display: flex;
+  gap: 28px;
+  margin: 0;
+}
+
+.doc-meta dt {
+  font-size: 11px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #B9B4AB;
+}
+
+.doc-meta dd {
+  margin: 2px 0 0;
+  font-size: 14px;
+}
+
+.masthead-nav {
+  display: flex;
+  gap: 4px;
+  margin-top: 16px;
+}
+
+.masthead-nav a {
+  color: #D6D2CB;
+  text-decoration: none;
+  font-size: 14px;
+  padding: 8px 14px;
+  border-bottom: 3px solid transparent;
+}
+
+.masthead-nav a:hover {
+  color: #fff;
+  border-bottom-color: var(--accent);
+}
+
+/* ---------- layout ---------- */
+
+.layout {
+  display: flex;
+  align-items: flex-start;
+  gap: 40px;
+  padding: 32px;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.toc {
+  flex: 0 0 280px;
+  position: sticky;
+  top: 24px;
+  max-height: calc(100vh - 56px);
+  overflow-y: auto;
+  background: var(--wash);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 18px 20px;
+}
+
+.toc-title {
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.toc ul { list-style: none; margin: 0; padding: 0; }
+.toc ul ul { padding-left: 14px; }
+
+.toc li { margin: 3px 0; }
+
+/* Wrapper that keeps a nested list inside a list item, where HTML wants it. */
+.toc .toc-branch { margin: 0; }
+
+.toc a {
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 14px;
+  display: block;
+  padding: 2px 0;
+}
+
+.toc a:hover { color: var(--accent); }
+
+.spec-body {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 820px;
+}
+
+/* ---------- document body ---------- */
+
+.spec-body h1 {
+  font-size: 26px;
+  font-weight: 600;
+  margin: 40px 0 8px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--rule);
+}
+
+.spec-body h1:first-child { margin-top: 0; }
+
+/* The UID arrives from Doorstop inside <small> at the end of the heading.
+   Reversing the flex direction lifts it above the title, where a reader looks
+   for a document reference. */
+.spec-body h2 {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-start;
+  gap: 2px;
+  font-size: 19px;
+  font-weight: 600;
+  margin: 32px 0 6px;
+}
+
+.spec-body h2 small {
+  font-family: Consolas, 'Courier New', monospace;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: .06em;
+  color: var(--muted);
+}
+
+.spec-body h3 { font-size: 16px; margin: 24px 0 6px; }
+
+.spec-body p { margin: 8px 0; }
+
+/* The rationale is commentary, not the promise, and is set back accordingly. */
+.spec-body p:has(> em:first-child) {
+  color: var(--muted);
+  font-size: 14px;
+  border-left: 2px solid var(--rule);
+  padding-left: 14px;
+  margin: 12px 0;
+}
+
+/* Doorstop emits the references as a blockquote. Naming it says what the line
+   is for without editing a single requirement file. */
+.spec-body blockquote {
+  margin: 12px 0;
+  padding: 0;
+  font-size: 14px;
+}
+
+.spec-body.is-document blockquote::before {
+  content: 'Verified by';
+  display: block;
+  font-size: 11px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.spec-body code {
+  font-family: Consolas, 'Courier New', monospace;
+  font-size: 13px;
+  background: var(--wash);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 1px 5px;
+}
+
+.spec-body pre {
+  background: var(--wash);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 14px 16px;
+  overflow-x: auto;
+}
+
+.spec-body pre code { background: none; border: 0; padding: 0; }
+
+/* ---------- tables ---------- */
+
+.spec-body table {
+  border-collapse: collapse;
+  margin: 12px 0 0;
+}
+
+.spec-body th, .spec-body td {
+  text-align: left;
+  padding: 6px 14px 6px 0;
+  vertical-align: top;
+}
+
+/* On a requirement page the only table is the one attribute pair, and a
+   two-row grid with its own header is heavier than the fact it carries. */
+.spec-body.is-document table thead { display: none; }
+
+.spec-body.is-document table td { vertical-align: baseline; }
+
+.spec-body.is-document table td:first-child {
+  font-size: 11px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* The traceability matrix is a real table and keeps its header. */
+.spec-body.is-page table { width: 100%; }
+
+.spec-body.is-page th {
+  font-size: 12px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-bottom: 1px solid var(--rule);
+  padding: 8px 12px 8px 0;
+}
+
+.spec-body.is-page td { border-bottom: 1px solid var(--rule); padding: 8px 12px 8px 0; }
+
+.spec-body a { color: var(--accent); }
+
+/* ---------- landing page ---------- */
+
+.layout.no-toc { max-width: 900px; }
+
+.landing .lede {
+  font-size: 17px;
+  color: var(--muted);
+  margin: 0 0 28px;
+  max-width: 62ch;
+}
+
+.landing .cards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.landing .cards li {
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 16px 18px;
+  background: var(--wash);
+}
+
+.landing .cards a {
+  display: block;
+  font-size: 17px;
+  font-weight: 600;
+  text-decoration: none;
+  margin-bottom: 4px;
+}
+
+.landing .cards span {
+  display: block;
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.5;
+}

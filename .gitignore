@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+
+# Generated artifacts
+.demo/
+public/
+trace.json
+traceability.html
+junit.xml
+.spec-index/

@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Coffee machine</title>
+<link rel="stylesheet" href="/machine.css">
+<style>
+  :root {
+    --ink: #2B2B2B;
+    --paper: #F5F5F0;
+    --dim: #6E6A62;
+    --pass: #2E7D4F;
+    --fail: #C0392B;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; height: 100vh; display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 3fr);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: var(--paper); color: var(--ink);
+  }
+  .left { display: grid; grid-template-rows: auto 1fr auto; grid-template-columns: minmax(0, 1fr); min-height: 0; border-right: 3px solid var(--ink); }
+  section { padding: 22px 26px; border-bottom: 3px solid var(--ink); min-height: 0; }
+  section:last-child { border-bottom: 0; }
+  h2 { margin: 0 0 10px; font-size: 15px; letter-spacing: .14em; text-transform: uppercase; color: var(--dim); }
+  #spec-text { font-size: 30px; line-height: 1.45; margin: 0; }
+  #spec-uid { font-family: Consolas, monospace; font-size: 20px; color: var(--dim); }
+  section.code { display: flex; flex-direction: column; }
+  #source { font-family: Consolas, monospace; font-size: 14px; line-height: 1.45;
+            margin: 0; overflow: auto; flex: 1; min-height: 0; white-space: pre; position: relative; }
+  #source span { display: block; padding: 0 6px; }
+  #source .governed { background: #FFF1BF; box-shadow: inset 4px 0 0 #E0A800; }
+  .badge { font-family: Consolas, monospace; font-size: 14px; color: var(--dim); }
+  #bar { display: flex; align-items: baseline; gap: 26px; }
+  #bar b { font-size: 72px; line-height: 1; }
+  .pass b { color: var(--pass); } .fail b { color: var(--fail); }
+  #first-failure { font-family: Consolas, monospace; font-size: 20px; color: var(--fail);
+                   min-height: 1.4em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  section.failing { background: #FBE9E7; }
+  .right { display: grid; grid-template-rows: auto 1fr auto; min-height: 0; padding: 18px; }
+  #machine-mount { min-height: 0; display: grid; place-items: center; }
+  #link { display: flex; justify-content: space-between; align-items: center; font-family: Consolas, monospace; font-size: 15px; }
+  #conn { padding: 3px 12px; border-radius: 999px; background: var(--pass); color: #fff; font-weight: 700; }
+  #conn[data-up="false"] { background: var(--fail); }
+  .controls { display: flex; gap: 12px; }
+  button { font: inherit; font-size: 17px; padding: 10px 18px; border: 3px solid var(--ink);
+           background: #fff; border-radius: 10px; cursor: pointer; white-space: nowrap; }
+  button:hover { background: #ECE8E0; }
+</style>
+</head>
+<body>
+  <div class="left">
+    <section>
+      <h2>Specification <span id="spec-uid">REQ-BREW-014</span></h2>
+      <p id="spec-text">loading…</p>
+    </section>
+
+    <section class="code">
+      <h2>src/coffee_machine/brew_control.py <span class="badge" id="sha">sha —</span></h2>
+      <pre id="source">loading…</pre>
+    </section>
+
+    <section id="results">
+      <h2>Tests</h2>
+      <div id="bar">
+        <span class="pass"><b id="passed">0</b> pass</span>
+        <span class="fail"><b id="failed">0</b> fail</span>
+      </div>
+      <div id="first-failure"></div>
+    </section>
+  </div>
+
+  <div class="right">
+    <div id="link">
+      <span>driven by src/coffee_machine/brew_control.py</span>
+      <span id="conn" data-up="false">CONNECTING</span>
+    </div>
+    <div id="machine-mount"></div>
+    <div class="controls">
+      <button data-action="espresso">Select espresso</button>
+      <button data-action="empty">Empty the tank</button>
+      <button data-action="refill">Refill</button>
+    </div>
+  </div>
+
+<script src="/machine.js"></script>
+</body>
+</html>

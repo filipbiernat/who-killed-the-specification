@@ -1,0 +1,80 @@
+name: spec-check
+
+# The deterministic gate. No model runs here: every step either exits zero or
+# it does not, and the answer is the same on every machine.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    name: Specification, code and tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: pip
+
+      - name: Install
+        run: pip install -e ".[dev]"
+
+      - name: Validate the specification
+        # Both flags matter. Without -e, an edit to an already accepted
+        # requirement is only a warning and the command still exits zero, so
+        # the gate would pass while the specification had drifted. Without -F
+        # Doorstop reformats the very files it is checking.
+        run: doorstop -e -F
+
+      - name: Check EARS and the house rules
+        run: python -m tools.spec_lint
+
+      - name: Run the tests
+        run: pytest --junitxml=junit.xml
+
+      - name: Report coverage of the specification
+        # Fails if any normative requirement has no test, or has a failing one.
+        run: python -m tools.trace_report
+
+      - name: Analyse what the specification does not say
+        # Never fails the build: this is a draft to read, not a gate.
+        run: python -m tools.risk_report
+
+      - name: Publish the specification
+        run: doorstop publish all ./public --template spec
+
+      - name: Upload the reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: specification
+          path: |
+            public/
+            junit.xml
+            trace.json
+          if-no-files-found: warn
+
+      - name: Package the site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+  pages:
+    name: Publish to GitHub Pages
+    needs: check
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deploy
+        uses: actions/deploy-pages@v4

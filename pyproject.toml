@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "coffee-machine-spec-demo"
+version = "1.0.0"
+description = "A specification you can run: requirements as Markdown, traced to Python and pytest."
+readme = "README.md"
+requires-python = ">=3.13"
+license = "MIT"
+dependencies = [
+    "doorstop==3.2",
+    "PyYAML==6.0.2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==8.3.4",
+    "pytest-watcher==0.4.3",
+]
+viz = [
+    "fastapi==0.115.6",
+    "uvicorn==0.34.0",
+    "watchfiles==1.0.3",
+]
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+packages = ["coffee_machine"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src", "."]
+addopts = "--strict-markers"
+markers = [
+    "requirement(*ids): link this test to the requirements it verifies",
+]
