@@ -11,11 +11,13 @@
 
 /* transform-box is not optional: without it the origin is measured from
    the viewBox, and the water would shrink towards the middle of the
-   picture instead of draining towards the bottom of the tank. */
+   picture instead of draining towards the bottom of the tank. A negative
+   scale would flip the water above the tank, so a level below empty is
+   drawn as empty; the number the Python sent is not corrected. */
 #water {
   transform-box: fill-box;
   transform-origin: 50% 100%;
-  transform: scaleY(var(--water-level));
+  transform: scaleY(max(0, var(--water-level)));
   transition: transform 0.6s ease-out;
 }
 
