@@ -82,10 +82,13 @@ def test_custom_volume_on_the_boundary_is_accepted(volume_ml):
 
 @pytest.mark.requirement("REQ-BREW-014")
 def test_empty_tank_refuses_espresso():
+    # ARRANGE: "and the water tank is empty"
     machine = CoffeeMachine(tank=Tank(level_ml=0))
 
+    # ACT: "When the user selects espresso"
     result = machine.request_brew(Drink.ESPRESSO)
 
+    # ASSERT: "the machine shall refuse to brew"
     assert result.brew_started is False
     assert result.refusal is Refusal.TANK_EMPTY
 
@@ -104,10 +107,13 @@ def test_empty_tank_outranks_a_cold_boiler():
 
 @pytest.mark.requirement("REQ-BREW-015")
 def test_a_tank_below_the_cup_size_refuses_to_brew():
+    # ARRANGE: "and the water tank holds less water than the requested volume"
     machine = CoffeeMachine(tank=Tank(level_ml=20))
 
+    # ACT: "When the user requests a brew"
     result = machine.request_brew(Drink.ESPRESSO)
 
+    # ASSERT: "the machine shall refuse to brew"
     assert result.brew_started is False
     assert result.refusal is Refusal.INSUFFICIENT_WATER
 
@@ -124,10 +130,13 @@ def test_a_tank_holding_exactly_the_cup_size_brews():
 
 @pytest.mark.requirement("REQ-BREW-021")
 def test_refusing_on_an_empty_tank_shows_the_refill_warning():
+    # ARRANGE: "because the water tank is empty"
     machine = CoffeeMachine(tank=Tank(level_ml=0))
 
+    # ACT: "When the machine refuses to brew"
     machine.request_brew(Drink.ESPRESSO)
 
+    # ASSERT: "the machine shall show a refill warning on its display"
     assert machine.display.warning is Warning.REFILL_TANK
 
 
