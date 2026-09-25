@@ -15,10 +15,10 @@ tags:
 - safety
 ---
 
-# Refuse to brew with an empty tank
+# Brew half a cup with an empty tank
 
 When the user selects espresso and the water tank is empty,
-the machine shall refuse to brew.
+the machine shall brew a half cup.
 
 *Rationale:* dry-running the pump destroys the heating element.
 

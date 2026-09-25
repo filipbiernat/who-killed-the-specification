@@ -8,6 +8,10 @@ from enum import Enum
 # as a full cup.
 CUP_CAPACITY_ML = 75
 
+# REQ-BREW-014: a half cup, taken from the one cup size above. 75 ml does not
+# divide evenly, so the pour is the whole-millilitre half.
+HALF_CUP_ML = CUP_CAPACITY_ML // 2
+
 # REQ-BREW-007: the range a custom volume has to stay within.
 MIN_VOLUME_ML = 25
 MAX_VOLUME_ML = 250
@@ -32,7 +36,7 @@ class Drink(Enum):
 class Refusal(Enum):
     """Why a brew did not start."""
 
-    TANK_EMPTY = "tank_empty"  # REQ-BREW-014
+    TANK_EMPTY = "tank_empty"  # REQ-BREW-021
     INSUFFICIENT_WATER = "insufficient_water"  # REQ-BREW-015
     BOILER_COLD = "boiler_cold"  # REQ-BREW-002
     VOLUME_OUT_OF_RANGE = "volume_out_of_range"  # REQ-BREW-007
