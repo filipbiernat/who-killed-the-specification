@@ -47,6 +47,23 @@
   animation: chug 0.6s ease-in-out infinite;
 }
 
+/* Brewing with nothing in the cup: the pump is running dry. No water
+   reaches the group head, so there is neither a pour nor steam. */
+#machine[data-state='brewing'][data-flow='none'] #stream,
+#machine[data-state='brewing'][data-flow='none'] #steam {
+  opacity: 0;
+}
+
+#machine[data-state='brewing'][data-flow='none'] #pump {
+  fill: #D9432B;
+  animation: chug 0.25s ease-in-out infinite, dry-run 0.5s steps(1, end) infinite;
+}
+
+@keyframes dry-run {
+  0%, 49%   { fill: #D9432B; }
+  50%, 100% { fill: #D2D1CD; }
+}
+
 #machine[data-state='refusing'] #warning-light,
 #machine[data-state='warning'] #warning-light {
   fill: #E8A33D;

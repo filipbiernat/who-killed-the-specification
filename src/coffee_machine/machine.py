@@ -28,8 +28,11 @@ class CoffeeMachine:
         self.display.warning = brew_control.warning_for(result)
 
         if result.brew_started:
-            self.tank.level_ml = max(0, self.tank.level_ml - result.volume_ml)
-            self.cup_ml = result.volume_ml
+            # The pump can only move the water the tank holds. A brew started
+            # on an empty tank runs the pump dry and pours nothing.
+            poured_ml = min(result.volume_ml, self.tank.level_ml)
+            self.tank.level_ml -= poured_ml
+            self.cup_ml = poured_ml
         return result
 
     def refill(self) -> None:

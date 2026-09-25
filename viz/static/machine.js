@@ -38,6 +38,7 @@ function render(snapshot) {
   if (!svg) return;
 
   svg.dataset.state = snapshot.state;
+  svg.dataset.flow = snapshot.cup_ml > 0 ? 'water' : 'none';
   svg.style.setProperty('--water-level', snapshot.tank_ml / snapshot.tank_capacity_ml);
   svg.style.setProperty('--cup-fill', snapshot.cup_ml / snapshot.cup_capacity_ml);
 

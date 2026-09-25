@@ -74,6 +74,9 @@ keep these names and shapes:
 - `model.Drink.ESPRESSO`, `model.Warning.NONE`, `Warning.banner`,
   `model.CUP_CAPACITY_ML`
 - `telemetry.snapshot(machine, state)` and the keys it returns
+- `request_brew()` pours only what the tank holds: `cup_ml` is the water
+  actually moved, never more than the level. The page draws a brew with an
+  empty cup as the pump running dry, so the hardware must not invent water.
 
 ## Ordering competing refusals
 
